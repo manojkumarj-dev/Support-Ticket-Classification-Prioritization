@@ -591,7 +591,7 @@ class LiveAppHandler(BaseHTTPRequestHandler):
 def run_server(port: int = 8501):
     server = HTTPServer(("0.0.0.0", port), LiveAppHandler)
     print("=" * 60)
-    print(f"🚀 Support Ticket AI Triage Live Server running at:")
+    print(f"Support Ticket AI Triage Live Server running at:")
     print(f"   Local URL:    http://localhost:{port}")
     print(f"   Network URL:  http://127.0.0.1:{port}")
     print("=" * 60)
