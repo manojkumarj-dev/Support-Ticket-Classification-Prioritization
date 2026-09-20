@@ -29,7 +29,28 @@ This system provides an automated, low-latency triage service that:
 
 ---
 
-## 2. Architecture & Workflow
+## 2. Interactive Live Web Demo
+
+The project includes an interactive web application and REST API for real-time ticket triage and SLA prioritization.
+
+![Support Ticket AI Triage Live Web Interface](reports/figures/live_app_interface.jpg)
+
+### Running the Live App Locally:
+```bash
+python app.py
+```
+*Access in browser at **http://localhost:8501***
+
+### Live REST API Endpoint:
+```bash
+curl -X POST http://localhost:8501/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Application crashes with 500 error when generating the annual tax report"}'
+```
+
+---
+
+## 3. Architecture & Workflow
 
 The pipeline enforces strict data leakage prevention by encapsulating text cleaning, TF-IDF vectorization, and calibrated classifiers inside scikit-learn `Pipeline` objects.
 
@@ -133,9 +154,10 @@ The winning pipelines were evaluated on the held-out test split (**433 unseen ti
 | **Priority** | Logistic Regression | **87.99%** | **0.8757** | **0.8673** | **0.8704** | **0.8788** |
 
 ### Confusion Matrices
-Confusion matrix visualizations are automatically generated in `reports/figures/`:
-- `reports/figures/confusion_matrix_category.png`
-- `reports/figures/confusion_matrix_priority.png`
+
+| Ticket Category Confusion Matrix | Ticket Priority Confusion Matrix |
+| :---: | :---: |
+| ![Confusion Matrix - Category](reports/figures/confusion_matrix_category.png) | ![Confusion Matrix - Priority](reports/figures/confusion_matrix_priority.png) |
 
 ### Qualitative Error Analysis
 While Category classification achieved 100% accuracy due to distinct technical vocabularies, Priority classification yielded 52 errors (12.01% error rate).
@@ -266,7 +288,13 @@ Priority     : Critical (36.7% confidence)
 ==================================================
 ```
 
-### 5. Run Automated Tests
+### 5. Run Interactive Web Application (Live Server)
+```bash
+python app.py
+```
+*Open http://localhost:8501 in your browser to interact with the live model.*
+
+### 6. Run Automated Tests
 ```bash
 python -m pytest tests/ -v
 ```
