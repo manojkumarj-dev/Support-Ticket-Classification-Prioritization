@@ -35,35 +35,35 @@ The pipeline enforces strict data leakage prevention by encapsulating text clean
 
 ```mermaid
 flowchart TD
-    subgraph Data Ingestion & Splitting
-        A[Raw Support Tickets] --> B[Schema Validation & Deduplication]
-        B --> C[Stratified Train/Test Split (80/20)]
-        C --> D[Training Split (1,732 tickets)]
-        C --> E[Held-Out Test Split (433 tickets)]
+    subgraph S1["Data Ingestion & Splitting"]
+        A["Raw Support Tickets"] --> B["Schema Validation & Deduplication"]
+        B --> C["Stratified Train/Test Split (80/20)"]
+        C --> D["Training Split (1,732 tickets)"]
+        C --> E["Held-Out Test Split (433 tickets)"]
     end
 
-    subgraph Feature Pipeline
-        D --> F[TextCleanerTransformer]
-        F --> G[TfidfVectorizer (unigrams + bigrams, min_df, max_df)]
+    subgraph S2["Feature Pipeline"]
+        D --> F["TextCleanerTransformer"]
+        F --> G["TfidfVectorizer (unigrams + bigrams, min_df, max_df)"]
     end
 
-    subgraph Model Benchmarking & Tuning
-        G --> H1[Multinomial Naive Bayes]
-        G --> H2[Logistic Regression]
-        G --> H3[Linear SVM (Calibrated)]
-        H1 --> I[5-Fold Stratified Cross-Validation (Macro F1)]
+    subgraph S3["Model Benchmarking & Tuning"]
+        G --> H1["Multinomial Naive Bayes"]
+        G --> H2["Logistic Regression"]
+        G --> H3["Linear SVM (Calibrated)"]
+        H1 --> I["5-Fold Stratified Cross-Validation (Macro F1)"]
         H2 --> I
         H3 --> I
-        I --> J[Hyperparameter Tuning (GridSearchCV)]
+        I --> J["Hyperparameter Tuning (GridSearchCV)"]
     end
 
-    subgraph Serialization & Inference
-        J --> K1[(Category Pipeline: MultinomialNB)]
-        J --> K2[(Priority Pipeline: Logistic Regression)]
-        E --> L[Model Evaluation & Error Analysis]
+    subgraph S4["Serialization & Inference"]
+        J --> K1[("Category Pipeline: MultinomialNB")]
+        J --> K2[("Priority Pipeline: Logistic Regression")]
+        E --> L["Model Evaluation & Error Analysis"]
         K1 --> L
         K2 --> L
-        K1 --> M[CLI / Python API: predict.py]
+        K1 --> M["CLI / Python API: predict.py"]
         K2 --> M
     end
 ```
